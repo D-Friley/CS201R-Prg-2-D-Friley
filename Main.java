@@ -1,7 +1,7 @@
 import java.util.Scanner;
-//NAME:
-//PROGRAM:
-//DATE:
+//NAME: Dantae Friley
+//PROGRAM: 2
+//DATE: 24Sep2026
 
 class Main {
 
@@ -12,7 +12,7 @@ class Main {
         Scanner scanner = new Scanner(System.in);
  
         //get the value of choice from displayMenu(scanner)
- 
+        choice = displayMenu(scanner);
         
         //as long as user wants to continue
         while (choice != 'c') {
@@ -25,6 +25,8 @@ class Main {
 
                 //case b: convert from decimal to binary 
                 case 'b':
+                    if (decToBin(scanner) == -1)
+                        System.out.println("Invalid decimal number.");
                     break;
 
                 //case c: exit program
@@ -33,6 +35,7 @@ class Main {
                     break;
             }
             // add another call to displayMenu
+            choice = displayMenu(scanner);
         }  
 
         scanner.close();
@@ -46,14 +49,19 @@ class Main {
         //while loop that repeats if the choice made is not a, b, or c
         while (choice != 'a' && choice != 'b' && choice != 'c'){
             //display menu choices
- 
+            System.out.println("A - Binary to Decimal");
+            System.out.println("B - Decimal to Binary");
+            System.out.println("C - Quit");
 
             //prompt user to enter choice
+            System.out.println("Please chose an option");
 
 
             //this code has been provided since scanner input is new...
             String input = scanner.nextLine().trim().toLowerCase();
-            choice = input.charAt(0);
+            if (!input.isEmpty()) {
+                choice = input.charAt(0);
+            }
         } 
 
         return choice;
@@ -69,7 +77,7 @@ class Main {
         int pow = 1;
 
         //prompt user to enter a binary number
-
+        System.out.println("Please entrer a binary number: ");
         //use the following to get scanner input
         String binary = scanner.nextLine().trim();
 
@@ -79,9 +87,19 @@ class Main {
         //      if charAt is '1': decimal += pow
         //      else if charAt is not '0': return -1
         //      pow *= 2
+        for (int i = binary.length() -1; i >= 0; i --){
+            if (binary.charAt(i) == '1'){
+                decimal += pow;
+        }
+            else if (binary.charAt(i) != '0'){
+                return -1;
+            }
+            pow *= 2;
+        }
 
         //display Binary input and Decimal output
-
+        System.out.println("Binary: " + binary);
+        System.out.println("Decimal: " + decimal);
         return 1;
     }
 
@@ -91,26 +109,46 @@ class Main {
         //loop str
         //  use Character.isDigit function to check each character for valid numeric value
 
-        return false;
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+        for (int i = 0; i < str.length(); i++) {
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static int decToBin(Scanner scanner) {
     
         //prompt user to enter a binary number
-
+        System.out.print("Please enter a decimal number: ");
 
         //get scanner input (similar to above)
         String input = scanner.nextLine().trim();
 
         //this line converts the input string to an integer
-        int decimal = Integer.parseInt(input);
+        if (!isDigits(input)) {
+            return -1;
+        }
+        int decimal;
+        try {
+            decimal = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
  
         //define other variables needed for conversion including output string for Binary value
         String binary = new String();
 
-        while (decimal !=0){
+        if (decimal == 0) {
+            binary = "0";
+        }
+        while (decimal != 0){
             //get remainder of modulus 2 & add to binary string
-            //update decimal to cut off last digit
+            binary = (decimal % 2) + binary;
+            decimal /= 2;
         }
 
         
